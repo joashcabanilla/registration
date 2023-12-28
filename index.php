@@ -4,6 +4,7 @@
 <head>
 <link rel="stylesheet" type="text/css" href="style.css">
 <link rel="shortcut icon" href="imgs/logo.gif">
+<title>NOVADECI Registration</title>
 </head>
 <body>
 <div class="form-wrapper" style="height:300px;">
