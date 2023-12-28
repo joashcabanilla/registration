@@ -76,11 +76,11 @@
             <th width="20%">Last Name</th>
             <th width="20%">First Name</th>
             <th width="20%">Middle Name</th>
-            <th width="30%">Branch</th>
-            <th width="10%">Registered Date</th>
+            <th width="15%">Branch</th>
+            <!-- <th width="10%">Registered Date</th> -->
             <!-- <th width="10%">Giveaway Received</th> -->
-            <th width="10%">Calendar Received</th>
-            <th width="10%">Date Received</th>
+            <th width="30%">Stub Number</th>
+            <th width="10%">Date Registered</th>
             <!-- <th width="20%">IP Address</th> -->
             <th>Options</th>
           </thead>
@@ -121,6 +121,9 @@
 
       $('#updateModal').on('hidden.bs.modal', function () {
         $(".dataTables_filter").find("input").focus();
+      });
+      $('#updateModal').on('shown.bs.modal', function () {
+        $("#registration_stub").focus();
       });
     } );
     $(document).on('submit','#addMember',function(e){
@@ -183,17 +186,18 @@
        var comp_name= $('#comp_nameField').val();
        var calendar_received = $("#calendar_receivedField").val();
        var calendar_date_received = $("#calendar_date_receivedField").val();
-
+       var stub_number = $("#registration_stub").val();
+       var date_registered = $("#registration_date_registered").val();
        var trid= $('#trid').val();
        var id= $('#id').val();
       //  if(voters_id != '' && memid != '' && lastname != '' && firstname != '' && middlename != '' && branch != '' && regs_date != '' && giveaway_received != '' && date_received != '' && comp_name != '')
-      if(lastname != '' && firstname != '' && middlename != '' && branch != '' && calendar_received != '' && calendar_date_received != '' && comp_name != '')
+      if(lastname != '' && firstname != '' && middlename != '' && branch != '' && stub_number != '' && date_registered != '' && comp_name != '')
        // if(voters_id != '' )
        {
          $.ajax({
            url:"update_member.php",
            type:"post",
-           data:{voters_id:voters_id,memid:memid,lastname:lastname,firstname:firstname,middlename:middlename,branch:branch,regs_date:regs_date,giveaway_received:giveaway_received,date_received:date_received,comp_name:comp_name,id:id, calendar_received:calendar_received, calendar_date_received: calendar_date_received, action: "calendar"},
+           data:{voters_id:voters_id,memid:memid,lastname:lastname,firstname:firstname,middlename:middlename,branch:branch,regs_date:regs_date,giveaway_received:giveaway_received,date_received:date_received,comp_name:comp_name,id:id, calendar_received:calendar_received, calendar_date_received: calendar_date_received, stub: stub_number, date_registered: date_registered, action: "registration"},
            success:function(data)
            {
              var json = JSON.parse(data);
@@ -206,7 +210,8 @@
               var row = table.row("[id='"+trid+"']");
 
               // row.row("[id='" + trid + "']").data([id,voters_id,memid,lastname,firstname,middlename,branch,regs_date,giveaway_received,date_received,comp_name,button]);
-              row.row("[id='" + trid + "']").data([id,voters_id,memid,lastname,firstname,middlename,branch,regs_date,calendar_received,calendar_date_received,button]);
+              let row_data = row.row("[id='" + trid + "']").data();
+              row.row("[id='" + trid + "']").data([id,row_data[1],memid,lastname,firstname,middlename,branch,stub_number,date_registered,button]);
               $('#updateModal').modal('hide');
               $(".dataTables_filter").find("input").focus();
             }
@@ -362,7 +367,7 @@
               </select>
             </div>
           </div> -->
-          <div class="mb-3 row">
+          <!-- <div class="mb-3 row">
             <label for="calendar_receivedField" class="col-md-3 form-label">Calendar Received</label>
             <div class="col-md-9">
               <select class="form-control" id="calendar_receivedField" name="calendar_received" style="font-size:24px;">
@@ -370,6 +375,12 @@
                 <option value="YES">YES</option>
                 <option value="NO">NO</option>
               </select>
+            </div>
+          </div> -->
+          <div class="mb-3 row">
+            <label for="registration_stub" class="col-md-3 form-label">Stub Number</label>
+            <div class="col-md-9">
+            <input type="text" class="form-control" id="registration_stub" name="stub">
             </div>
           </div>
           <!-- <div class="mb-3 row">
@@ -379,9 +390,9 @@
             </div>
           </div> -->
           <div class="mb-3 row">
-            <label for="calendar_date_receivedField" class="col-md-3 form-label">Calendar Date Recieved</label>
+            <label for="registration_date_registered" class="col-md-3 form-label">Date Registered</label>
             <div class="col-md-9">
-              <input type="date" class="form-control" id="calendar_date_receivedField" name="calendar_date_received" style="font-size:24px;">
+              <input type="date" class="form-control" id="registration_date_registered" name="registration_date_registered">
             </div>
           </div>
           <div class="mb-3 row">

@@ -1,5 +1,5 @@
 <?php
-$con = mysqli_connect("localhost","root","","votesystem");
+$con = mysqli_connect("localhost","root","","registration");
 
 // Check connection
 if (mysqli_connect_errno())
