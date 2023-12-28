@@ -1,0 +1,258 @@
+body{
+    background:gray;
+  font-family: 'Lato', sans-serif;
+  }
+  .main-section{
+    width:80%;
+    margin:0 auto;
+  }
+  .dashbord{
+    /* margin-top:30px; */
+    /* margin-right: 10px; */
+    display: inline-block;
+    /* width:25%; */
+    color:#fff;
+    border-radius: 3px;
+  }
+  .title-section{
+    border-radius: 5px 5px 0px 0px;
+    text-align: center;
+    background-color:#7CD6F8;
+    padding:7px 0px;
+  }
+  .title-section p{
+    margin:0px;
+    font-size:13px;
+  }
+  .icon-text-section{
+    background-color:#5BCCF6;
+    padding:5px 10px;
+  }
+  .icon-section{
+    font-size:50px;
+    float:left;
+    width:10%;
+    color:#8BDBF8;
+  }
+  .text-section{
+    width:80%;
+    float:right;
+    text-align: right;
+  }
+  .text-section h1{
+    margin:0px;
+    font-size:35px;
+  }
+  .detail-section{
+    background-color: #52B8DE;
+    cursor: pointer;
+    border-radius: 0px 0px 5px 5px;
+  }
+  .detail-section a{
+    color:#fff;
+  }
+  .detail-section a p{
+    display: inline-block;
+    margin: 0px;
+    font-size: 12px;
+    padding:10px;
+  }
+  .detail-section a i{
+    float:right;
+    padding: 10px 5px 0px 0px;
+  }
+  .dashbord .detail-section:hover{
+    background-color:#5a5a5a;
+  }
+  .download-content .title-section{
+    background-color:#B0DA7A;
+  }
+  .download-content .icon-text-section{
+    background-color: #9CD159;
+  }
+  .download-content .detail-section{
+    background-color: #8DBC50;
+  }
+  .download-content .icon-section{
+    color:#B9DE8A;
+  }
+
+  .pending-content .title-section{
+    background-color:#FF7979;
+  }
+  .pending-content .icon-text-section{
+    background-color:#FF5757;
+  }
+  .pending-content .icon-section{
+    color:#FF8989;
+  }
+  .pending-content .detail-section{
+    background-color:#E64F4F;
+  }
+
+  .approved-content .title-section{
+    background-color:#ffc107;
+  }
+  .approved-content .icon-text-section{
+    background-color: #e6b31d;
+  }
+  .approved-content .detail-section{
+    background-color: #cea836;
+  }
+  .approved-content .icon-section{
+    color:#f5f126;
+  }
+  .branch-content .title-section{
+    background-color:#0cc415;
+  }
+  .branch-content .icon-text-section{
+    background-color: #59d177;
+  }
+  .branch-content .detail-section{
+    background-color: #50bc74;
+  }
+  .branch-content .icon-section{
+    color:#8ade91;
+  }
+
+  .bsilang-content .title-section{
+    background-color:#0cbec4;
+  }
+  .bsilang-content .icon-text-section{
+    background-color: #59cdd1;
+  }
+  .bsilang-content .detail-section{
+    background-color: #50afbc;
+  }
+  .bsilang-content .icon-section{
+    color:#8ad2de;
+  }
+
+  .bulacan-content .title-section{
+    background-color:#0c8ac4;
+  }
+  .bulacan-content .icon-text-section{
+    background-color: #5991d1;
+  }
+  .bulacan-content .detail-section{
+    background-color: #507fbc;
+  }
+  .bulacan-content .icon-section{
+    color:#8aa8de;
+  }
+
+  .camarin-content .title-section{
+    background-color:#6b0cc4;
+  }
+  .camarin-content .icon-text-section{
+    background-color: #8759d1;
+  }
+  .camarin-content .detail-section{
+    background-color: #8250bc;
+  }
+  .camarin-content .icon-section{
+    color:#b68ade;
+  }
+
+  .fairview-content .title-section{
+    background-color:#c40cc4;
+  }
+  .fairview-content .icon-text-section{
+    background-color: #d159d1;
+  }
+  .fairview-content .detail-section{
+    background-color: #b850bc;
+  }
+  .fairview-content .icon-section{
+    color:#d78ade;
+  }
+
+  .kiko-content .title-section{
+    background-color:#c40c53;
+  }
+  .kiko-content .icon-text-section{
+    background-color: #d15987;
+  }
+  .kiko-content .detail-section{
+    background-color: #bc5079;
+  }
+  .kiko-content .icon-section{
+    color:#de8a9f;
+  }
+
+  .lagro-content .title-section{
+    background-color:#c45f0c;
+  }
+  .lagro-content .icon-text-section{
+    background-color: #d19959;
+  }
+  .lagro-content .detail-section{
+    background-color: #bc8450;
+  }
+  .lagro-content .icon-section{
+    color:#deb08a;
+  }
+
+  .main_ofc-content .title-section{
+    background-color:#0cc415;
+  }
+  .main_ofc-content .icon-text-section{
+    background-color: #59d177;
+  }
+  .main_ofc-content .detail-section{
+    background-color: #50bc74;
+  }
+  .main_ofc-content .icon-section{
+    color:#8ade91;
+  }
+
+  .tsora-content .title-section{
+    background-color:#c1c40c;
+  }
+  .tsora-content .icon-text-section{
+    background-color: #d1cf59;
+  }
+  .tsora-content .detail-section{
+    background-color: #bcba50;
+  }
+  .tsora-content .icon-section{
+    color:#ded98a;
+  }
+
+  .munoz-content .title-section{
+    background-color:hsl(162, 78%, 41%);
+  }
+  .munoz-content .icon-text-section{
+    background-color: #59d1a9;
+  }
+  .munoz-content .detail-section{
+    background-color: #50bca5;
+  }
+  .munoz-content .icon-section{
+    color:#8adebb;
+  }
+
+  .cubao-content .title-section{
+    background-color:#74c40c;
+  }
+  .cubao-content .icon-text-section{
+    background-color: #9cda4c;
+  }
+  .cubao-content .detail-section{
+    background-color: #7dbe28;
+  }
+  .cubao-content .icon-section{
+    color:#cce78d;
+  }
+
+  #outer-div {
+    width: 100%;
+    text-align: center;
+
+  }
+  #inner-div {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 3px;
+
+  }

@@ -1,0 +1,376 @@
+<?php
+  include 'inc/header.php';
+  Session::CheckSession();
+  $logMsg = Session::get('logMsg');
+  if (isset($logMsg)) {
+    echo $logMsg;
+  }
+  $msg = Session::get('msg');
+  if (isset($msg)) {
+    echo $msg;
+  }
+  Session::set("msg", NULL);
+  Session::set("logMsg", NULL);
+?>
+<?php
+require_once('config/dbcon.php');
+// $conn=new PDO('mysql:host=localhost; dbname=fsutility', 'root', '') or die(mysql_error());
+if(isset($_POST['submit'])!=""){
+  $name=$_FILES['file']['name'];
+  $size=$_FILES['file']['size'];
+  $type=$_FILES['file']['type'];
+  $temp=$_FILES['file']['tmp_name'];
+  $fname = date("YmdHis").'_'.$name;
+  $chk = $conn->query("SELECT * FROM  upload where name = '$name' ")->rowCount();
+  if($chk){
+    $i = 1;
+    $c = 0;
+	while($c == 0){
+    	$i++;
+    	$reversedParts = explode('.', strrev($name), 2);
+    	$tname = (strrev($reversedParts[1]))."_".($i).'.'.(strrev($reversedParts[0]));
+
+    	$chk2 = $conn->query("SELECT * FROM  upload where name = '$tname' ")->rowCount();
+    	if($chk2 == 0){
+    		$c = 1;
+    		$name = $tname;
+    	}
+    }
+}
+ $move =  move_uploaded_file($temp,"upload/".$fname);
+ if($move){
+ 	$query=$conn->query("insert into upload(name,fname)values('$name','$fname')");
+	if($query){
+	header("location:dashboard.php");
+	}
+	else{
+	die(mysql_error());
+	}
+ }
+}
+?>
+<link rel="stylesheet" type="text/css" href="css/dashboard_style.css">
+<link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+<!-- <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> -->
+
+  <div class="card ">
+    <div class="card-header">
+      <h4><i class="fa fa-dashboard"></i>&nbsp;Dashboard <span class="float-right">Welcome!
+      <strong>
+        <span class="badge badge-lg text-white" style="background-color: purple;">
+          <?php
+            $username = Session::get('username');
+            if (isset($username)) {
+              echo $username;
+            }
+           ?>
+        </span>
+      </strong></span></h4>
+    </div>
+    <div class="card-body pr-2 pl-2">
+      <body><br />
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="container">
+
+              <section id="main">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                          <div class="panel-body">
+                            <div class="row" id="outer-div">
+
+                              <div class="dashbord pending-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p>PENDING</p>
+                          			</div>
+                          			<div class="icon-text-section">
+                          				<div class="icon-section">
+                          					<i class="fa fa-spinner" aria-hidden="true"></i>
+                          				</div>
+                          				<div class="text-section">
+                                    <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where status="Pending"') as $row) {
+                                        echo "<h1 style='color:white;margin-right:25px'>".$row['SUM(status_cnt)']."</h1>";
+                                        }
+                                      ?>
+                          				</div>
+                          				<div style="clear:both;"></div>
+                          			</div>
+                          			<div class="detail-section">
+                          				<a href="pending.php">
+                          					<p>View Detail</p>
+                          					<i class="fa fa-arrow-right" aria-hidden="true"></i>
+                          				</a>
+                          			</div>
+                          		</div>
+
+                              <div class="dashbord email-content" id="inner-div">
+                                <div class="title-section">
+                                  <p>FOR APPROVAL</p>
+                                </div>
+                                <div class="icon-text-section">
+                                  <div class="icon-section">
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                  </div>
+                                  <div class="text-section">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where status="For Approval"') as $row) {
+                                        echo "<h1 style='color:white;margin-right:25px'>".$row['SUM(status_cnt)']."</h1>";
+                                        }
+                                      ?>
+                                  </div>
+                                  <div style="clear:both;"></div>
+                                </div>
+                                <div class="detail-section">
+                                  <a href="for_approval.php">
+                                    <p>View Detail</p>
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                  </a>
+                                </div>
+                              </div>
+
+                              <div class="dashbord processing-content" id="inner-div">
+                                <div class="title-section">
+                                  <p>APPROVED MEMBER</p>
+                                </div>
+                                <div class="icon-text-section">
+                                  <div class="icon-section">
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                  </div>
+                                  <div class="text-section">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where status="Approved"') as $row) {
+                                        echo "<h1 style='color:white;margin-right:25px'>".$row['SUM(status_cnt)']."</h1>";
+                                        }
+                                      ?>
+                                  </div>
+                                  <div style="clear:both;"></div>
+                                </div>
+                                <div class="detail-section">
+                                  <a href="approved.php">
+                                    <p>View Detail</p>
+                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                  </a>
+                                </div>
+                              </div>
+
+                              <div class="dashbord approved-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p>CANCELLED</p>
+                          			</div>
+                          			<div class="icon-text-section">
+                          				<div class="icon-section">
+                          					<i class="fa fa-circle-o-notch" aria-hidden="true"></i>
+                          				</div>
+                          				<div class="text-section">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where status="Cancelled"') as $row) {
+                                        echo "<h1 style='color:white;margin-right:25px'>".$row['SUM(status_cnt)']."</h1>";
+                                        }
+                                      ?>
+                          				</div>
+                          				<div style="clear:both;"></div>
+                          			</div>
+                          			<div class="detail-section">
+                          				<a href="cancelled.php">
+                          					<p>View Detail</p>
+                          					<i class="fa fa-arrow-right" aria-hidden="true"></i>
+                          				</a>
+                          			</div>
+                          		</div>
+
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">MAIN OFFICE</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="main_office.php">
+                          					<h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3> </a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="main_office.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Main Office"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">BSILANG</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="bsilang.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                                <a href="bsilang.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Bagong Silang"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">CAMARIN</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="camarin.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="camarin.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Camarin"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">KIKO</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="kiko.php">
+                          				<h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="kiko.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Kiko"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">FAIRVIEW</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="fairview.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="fairview.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Fairview"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">LAGRO</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="lagro.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="lagro.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Lagro"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">MUÑOZ</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="munoz.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="munoz.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Muñoz"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">T.SORA</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="tsora.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="tsora.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Tandang Sora"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                              <div class="processing-content" id="inner-div">
+                          			<div class="title-section">
+                          				<p style="padding:7px;color:white">BULACAN</p>
+                          			</div>
+                          				<div class="icon-section">
+                                  <a href="bulacan.php">
+                                  <h3 style='color:green;'><i class="fa fa-line-chart" aria-hidden="true"></i></h3></a>
+                          			  </div>
+                          			<div class="detail-section">
+                          				<a href="bulacan.php">
+                                  <?php
+                                        foreach($conn->query('SELECT SUM(status_cnt)
+                                        FROM applicants where branch="Bulacan"') as $row) {
+                                        echo "<h3 style='color:white;'>".$row['SUM(status_cnt)']."</h3>";
+                                        }
+                                      ?>
+                          				</a>
+                          			</div>
+                          		</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+                <br /><br />
+            </div>
+          </div>
+        </div>
+      </body>
+  </div>
+  <?php
+  include 'inc/footer.php';
+?>
+</div>
