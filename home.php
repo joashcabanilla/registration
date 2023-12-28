@@ -255,6 +255,7 @@
        $('#comp_nameField').val(json.comp_name);
        $('#id').val(id);
        $('#trid').val(trid);
+       $("#registration_stub").val(json.stub_number);
      }
    })
    });
@@ -392,7 +393,7 @@
           <div class="mb-3 row">
             <label for="registration_date_registered" class="col-md-3 form-label">Date Registered</label>
             <div class="col-md-9">
-              <input type="date" class="form-control" id="registration_date_registered" name="registration_date_registered">
+              <input type="date" class="form-control" id="registration_date_registered" name="registration_date_registered" value="<?php echo date('Y-m-d'); ?>">
             </div>
           </div>
           <div class="mb-3 row">
