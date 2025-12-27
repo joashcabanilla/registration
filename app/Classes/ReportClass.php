@@ -198,13 +198,13 @@ class ReportClass
         $userList = array();
         $summaryList = array();
         $staffSummary = array();
+        $branchSummary = array();
 
         $users = $this->userModel->get();
         foreach($users as $user){
             $userList[$user->id] = strtoupper(strtolower($user->name));
         }
 
-        $var["title"] = "Summary Report";
         $data = $this->memberModel->whereNotNull("registered_by");
         if(!empty($reportData->dateFrom) && !empty($reportData->dateTo)){
             $data = $data->whereBetween("received_at", [date("Y-m-d", strtotime($reportData->dateFrom))." 00:00:00", date("Y-m-d", strtotime($reportData->dateTo))." 23:59:59"]);
@@ -215,12 +215,23 @@ class ReportClass
             $memberData = [
                 "memid" => $member->memid,
                 "pbno" => $member->pbno,
+                "name" => strtoupper(strtolower($member->lastname.", ".$member->firstname." ".$member->middlename)),
                 "branch" => $member->branch,
                 "updatedBy" => $userList[$member->registered_by],
                 "dataReceived" => date("m/d/Y", strtotime($member->received_at))
             ];
+
+            $summaryList[] = $memberData;
+            $staffSummary[$userList[$member->registered_by]][] = $memberData;
+            $branchSummary[$member->branch][] = $memberData;
         }
 
-        dd($data);
+        ksort($branchSummary);
+        $var["title"] = "Summary Report";
+        $var["summaryList"] = $summaryList;
+        $var["staffSummary"] = $staffSummary;
+        $var["branchSummary"] = $branchSummary;
+
+        return response()->make(view("Report.SummaryReport",$var), '200');
     }
 }
